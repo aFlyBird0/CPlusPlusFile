@@ -53,7 +53,9 @@ public:
 		//左分数右小数相乘
 	Fraction operator / (double number);
 		//左分数右小数相除
-	int operator == (const Fraction& fac)const;
+	bool operator == (const Fraction& fac)const;
+	bool operator > (const Fraction& fac)const;
+	bool operator < (const Fraction& fac)const;
 	static int maxCommonDivisor(int max, int min);
 		//求最大公约数
 	friend ostream& operator << 
@@ -161,6 +163,21 @@ Fraction Fraction::operator * (double number)
 Fraction Fraction::operator / (double number)
 {
 	return Fraction(num/(den*1.0) / number);
+}
+
+bool Fraction::operator == (const Fraction& fac)const
+{
+	return num + den == fac.num + fac.den;
+}
+
+bool Fraction::operator > (const Fraction& fac)const
+{
+	return num + den > fac.num + fac.den;
+}
+
+bool Fraction::operator < (const Fraction& fac)const
+{
+	return num + den < fac.num + fac.den;
 }
 
 ostream& operator << (ostream& out, const Fraction& fra)

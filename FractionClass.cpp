@@ -60,10 +60,10 @@ public:
 	static int maxCommonDivisor(int max, int min);
 		//求最大公约数
 	static void regular(Fraction& fra);	//分数规约化
-	friend ostream& operator << 
+	friend ostream& operator <<
 			(ostream& out, const Fraction& fra);
 						//输出重载，可以直接输出对象
-	friend istream& operator >> 
+	friend istream& operator >>
 			(istream& in, Fraction& fra);
 						//输入重载，可以直接输入对象
 	~Fraction(){};
@@ -74,7 +74,7 @@ private:
 
 Fraction::Fraction(int numNew, int denNew)
 {
-	if(0 == denNew)	
+	if(0 == denNew)
 			//判断分母是否为0，并且将0写在左边
 			//这样可以有效防止赋值与等号不小心写错
 	{
@@ -97,12 +97,12 @@ int Fraction::maxCommonDivisor(int max, int min)
 	if(max < min)
 	{
 		temp = max;
-		max = min;
-		min = temp;	//保证max比min大
+		max  = min;
+		min  = temp;	//保证max比min大
 	}
 	while(r != 0)
 	{
-		r = max % min;
+		r   = max % min;
 		max = min;
 		min = r;
 	}
@@ -194,7 +194,7 @@ bool Fraction::operator < (const Fraction& fac)const
 ostream& operator << (ostream& out, const Fraction& fra)
 {
 	out<<"The fraction is "<<fra.num<<"/"<<fra.den<<endl;
-	return out;	
+	return out;
 }
 
 istream& operator >> (istream& in, Fraction& fra)
@@ -217,7 +217,7 @@ int main()
 	cout<<fraTest;
 	Fraction fra1(-20, -100);
 	Fraction fra2(2.22);
-	cout<<fra1<<fra2;	
+	cout<<fra1<<fra2;
 		//因为重载的时候末尾已经有endl所以这里不需要
 	cout<<(double)fra2<<endl;	//double强制转换
 	cout<<(int)fra2<<endl;		//int强制转换

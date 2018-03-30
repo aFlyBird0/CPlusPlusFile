@@ -223,11 +223,12 @@ int main()
 	cout<<(int)fra2<<endl;		//int强制转换
 	cout<<++fra2;
 	Fraction fra3;
-	cin>>fra3;
+	cin>>fra3;	//直接输入对象
 	cout<<fra3<<endl;
 	Fraction fra4(fra1 + fra2);
 	cout<<fra4<<endl;
-	cout<<((double)fra1>=(double)fra2)<<endl;
-	//cout<<fra1+1<<endl;
+	cout<<(fra1 > fra2)<<endl;
+		//这里必须加括号，不然会报错
+	cout<<fra1 + 1.0<<endl;
 	return 0;
 }

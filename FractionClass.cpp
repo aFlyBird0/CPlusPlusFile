@@ -1,16 +1,17 @@
 /*
 编写人：李鹤鹏
-编写时间：2018/03/27
+编写时间：2018/03/27 - 2018/03//28
 功能：分数类：
 			1.实现分数的规约化（正负号，分子分母化简）
 			2.分数与实数类型相互转化，保留两位小数
 			3.分数与整数转换（取整）
 			4.增删改查，加减乘除，自增自减（运算符重载）
 			5.大于小于等于比较，输入输出重载
-			6.如果分母是零，报错
+			6.如果分母是零，报错，并且将分母改为1
 */
 
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -47,17 +48,18 @@ public:
 		//左分数右分数相除
 	Fraction operator + (double number)const;
 		//左分数右小数相加
-	Fraction operator - (double number);
+	Fraction operator - (double number)const;
 		//左分数右小数相减
-	Fraction operator * (double number);
+	Fraction operator * (double number)const;
 		//左分数右小数相乘
-	Fraction operator / (double number);
+	Fraction operator / (double number)const;
 		//左分数右小数相除
 	bool operator == (const Fraction& fac)const;
 	bool operator > (const Fraction& fac)const;
 	bool operator < (const Fraction& fac)const;
 	static int maxCommonDivisor(int max, int min);
 		//求最大公约数
+	static void regular(Fraction& fra);	//分数规约化
 	friend ostream& operator << 
 			(ostream& out, const Fraction& fra);
 						//输出重载，可以直接输出对象
@@ -72,25 +74,26 @@ private:
 
 Fraction::Fraction(int numNew, int denNew)
 {
-	if((numNew>0 && denNew<0) || (numNew<0 && denNew<0))
+	if(0 == denNew)	
+			//判断分母是否为0，并且将0写在左边
+			//这样可以有效防止赋值与等号不小心写错
 	{
-		num = -numNew;
-		den = -denNew;	//分子分母符号规约化
+		denNew = 1;
+		cout<<"Error:The denominator can not be 0!\n";
+		cout<<"It has been forced to change to 1"<<endl;
+
 	}
-	else
-	{
-		num = numNew;
-		den = denNew;
-	}
-	int divisor = maxCommonDivisor(num, den);
-	num /= divisor;
-	den /= divisor;	//分子分母规约化
+	num = numNew;
+	den = denNew;
+	regular(*this);	//*this是当前对象，规约化
 
 }
 
 int Fraction::maxCommonDivisor(int max, int min)
 {
 	int temp, r;
+	max = abs(max);
+	min = abs(min);
 	if(max < min)
 	{
 		temp = max;
@@ -106,22 +109,30 @@ int Fraction::maxCommonDivisor(int max, int min)
 	return max;
 }
 
+void Fraction::regular(Fraction& fra)
+{
+	if((fra.num>0 && fra.den<0) || (fra.num<0 && fra.den<0))
+	{
+		fra.num = -fra.num;
+		fra.den = -fra.den;	//分子分母符号规约化
+	}
+	int divisor = maxCommonDivisor(fra.num, fra.den);
+	fra.num /= divisor;
+	fra.den /= divisor;	//分子分母规约化
+}
+
 Fraction::Fraction(double number)
 {
 	num = (int)(100 * number);	//分子就是小数乘100取整
 	den = 100;	//分母是100，之后利用构造函数进行规约化
-	int divisor = maxCommonDivisor(num, den);
-	num /= divisor;
-	den /= divisor;
+	regular(*this);	//规约化
 }
 
 Fraction& Fraction::operator ++()
 {
 	++num;
 	++den;	//分子分母分别自加
-	int divisor = maxCommonDivisor(num, den);
-	num /= divisor;
-	den /= divisor;
+	regular(*this);	//规约化
 	return *this;	//返回当前对象
 }
 
@@ -150,17 +161,17 @@ Fraction Fraction::operator + (double number)const
 	return Fraction(num/(den*1.0) + number);
 }
 
-Fraction Fraction::operator - (double number)
+Fraction Fraction::operator - (double number)const
 {
 	return Fraction(num/(den*1.0) - number);
 }
 
-Fraction Fraction::operator * (double number)
+Fraction Fraction::operator * (double number)const
 {
 	return Fraction(num/(den*1.0) * number);
 }
 
-Fraction Fraction::operator / (double number)
+Fraction Fraction::operator / (double number)const
 {
 	return Fraction(num/(den*1.0) / number);
 }
@@ -189,13 +200,22 @@ ostream& operator << (ostream& out, const Fraction& fra)
 istream& operator >> (istream& in, Fraction& fra)
 {
 	in>>fra.num>>fra.den;
+	if((fra.num>0 && fra.den<0) || (fra.num<0 && fra.den<0))
+	{
+		fra.num = -fra.num;
+		fra.den = -fra.den;	//分子分母符号规约化
+	}
+	Fraction::regular(fra);
+		//输入的时候别忘了规约化
 	return in;
 }
 
 int main()
 {
 	//cout<<Fraction::maxCommonDivisor(8,4)<<endl;
-	Fraction fra1(20, 100);
+	Fraction fraTest(1, 0);
+	cout<<fraTest;
+	Fraction fra1(-20, -100);
 	Fraction fra2(2.22);
 	cout<<fra1<<fra2;	
 		//因为重载的时候末尾已经有endl所以这里不需要
@@ -208,6 +228,6 @@ int main()
 	Fraction fra4(fra1 + fra2);
 	cout<<fra4<<endl;
 	cout<<((double)fra1>=(double)fra2)<<endl;
-	cout<<fra1+1<<endl;
+	//cout<<fra1+1<<endl;
 	return 0;
 }

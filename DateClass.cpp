@@ -8,8 +8,9 @@ public:
     Date(int Year=2000,int Month=1, int Day=1);
     //Date(const Class& date);
     void set(int Year, int Month, int Day);
-    int isLeapyear();
+    int isLeapyear();	//判断是否闰年
     static int cal(const Date& date);
+    	//计算第几天
     void Show();
     friend void test(const Date& date);
     ~Date(){};

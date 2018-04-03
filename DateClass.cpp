@@ -5,20 +5,20 @@ using namespace std;
 class Date
 {
 public:
-    Date(int Year=2000,int Month=1, int Day=1);    //¹¹Ôìº¯Êý
-    //Date(const Class& date);	//¸´ÖÆ¹¹Ôìº¯Êý
+    Date(int Year=2000,int Month=1, int Day=1);
+    //Date(const Class& date);
     void set(int Year, int Month, int Day);
-    int isLeapyear();//ÅÐ¶ÏÊÇ·ñÎªÈòÄê
-    static int cal(const Date& date);//¼ÆËãÊÇ¸ÃÄêµÄµÚ¼¸Ìì
-    void Show();//ÏÔÊ¾ÄêÔÂÈÕ
-    ~Date(){};	//Îö¹¹º¯Êý
+    int isLeapyear();
+    static int cal(const Date& date);
+    void Show();
+    friend void test(const Date& date);
+    ~Date(){};
 
 private:
 	int year;
 	int month;
 	int day;
 	static int days[12];
-	
 };
 
 Date::Date(int Year,int Month, int Day)
@@ -49,44 +49,47 @@ int Date::isLeapyear()
 
 int Date::cal(const Date& date)
 {
-	int num = 0;	
+	int num = 0;	//第几天
 	switch(date.month)
 	{
-		case 12: num += days[11];
-		case 11: num += days[10];
-		case 10: num += days[9];
-		case 9: num += days[8];
-		case 8: num += days[7];
-		case 7: num += days[6];
-		case 6: num += days[5];
-		case 5: num += days[4];
-		case 4: num += days[3];
-		case 3: num += days[2];
-		case 2: num += days[1];
-		case 1: num += days[0];
+		//如果是十二月那么应该加上前十一月天数
+		case 12: num += days[10];
+		case 11: num += days[9];
+		case 10: num += days[8];
+		case 9: num += days[7];
+		case 8: num += days[6];
+		case 7: num += days[5];
+		case 6: num += days[4];
+		case 5: num += days[3];
+		case 4: num += days[2];
+		case 3: num += days[1];
+		case 2: num += days[0];
 	}
-	num += date.day;
+	num += date.day;	//再加上日子数
 	return num;
 }
 
 void Date::Show()
 {
-	cout<<"ÊÇ"<<year<<"ÄêµÄµÚ"<<Date::cal(*this)<<"Ìì"<<endl;
+	cout<<year<<"年"<<month<<"月"<<day<<"日"<<endl;
 
 }
 
-//void test()
+void test(const Date& date)
+{
+	cout<<"是"<<date.year<<"年的第"<<Date::cal(date)<<"天"<<endl;
+}
 
 int Date::days[] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
 int main()
 {
-	Date date();
+	Date date;
 	int Year, Month, Day;
 	while(cin>>Year>>Month>>Day)
 	{
 		date.set(Year, Month, Day);
-		date.Show();
+		test(date);
 	}
     return 0;
 }

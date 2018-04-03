@@ -67,7 +67,9 @@ ostream& operator <<(ostream& out, const Time& time)
 
 istream& operator >>(istream& in, Time& time)
 {
-	in>>time.hour>>':'time.minute>>time.second;
+	char ch;
+	in>>time.hour>>ch>>time.minute>>ch>>time.second;
+	//用一个字符来吸收':'
 	return in;
 }
 

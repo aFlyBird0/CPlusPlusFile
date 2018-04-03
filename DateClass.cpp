@@ -88,9 +88,10 @@ int main()
 	Date date;
 	int Year, Month, Day;
 	while(cin>>Year>>Month>>Day)
+		//读取到文件末尾返回eof结束读取
 	{
 		date.set(Year, Month, Day);
-		test(date);
+		test(date);	//用外部函数进行计算与输出
 	}
     return 0;
 }

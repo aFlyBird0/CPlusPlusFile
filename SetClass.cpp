@@ -83,8 +83,9 @@ Set::Set()
 
 Set::Set(const Set& set)
 {
-	if(NULL != buf)
-		delete[] buf;
+	//if(NULL != buf)
+		//delete[] buf;
+	//原来指向的是随机内存，不能删，否则会造成删掉不该删的东西
 	buf = new int[set.count]();
 		//分配空间并让buf指向
 	for(int i=0; i<set.count; i++)
@@ -98,6 +99,8 @@ Set Set::operator = (const Set& set)
 {
 	if(NULL != buf)
 		delete[] buf;
+	if(set.buf == buf)
+		return *this;
 	buf = new int[set.count]();
 		//分配空间并让buf指向
 	for(int i=0; i<set.count; i++)

@@ -8,7 +8,7 @@
 	4.实现矩阵转置
 	5.矩阵初等行变换:a.交换两行
 					b.某一行乘不为0的数
-					3.某一行乘k加到另一行上去
+					c.某一行乘k加到另一行上去
 */
 
 #include <iostream>
@@ -243,7 +243,7 @@ int main()
 	cout<<mat3<<endl;
 	cout<<mat1 - mat2;	//矩阵相减
 	cout<<mat1 * mat3;	//矩阵相乘
-	cout<<mat3.transpose();
+	cout<<mat3.transpose();	//矩阵转置
 	cout<<mat3.swapRow(1,2);	//交换第二行与第三行位置
 	cout<<mat3.multiplyRow(0,3);	//第一行乘3
 	cout<<mat3.multiplyAddRow(0,1,2);//第二行乘2加到第一行

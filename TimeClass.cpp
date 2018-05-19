@@ -95,7 +95,7 @@ void Time::setTime(int newHour, int newMinute, int newSecond)
 
 int Time::minusTime(Time& time1, Time& time2)
 {
-	int time1Second = time1.hour * 3600 + 
+	int time1Second = time1.hour * 3600 +
 					time1.minute * 60 + time1.second;
 	int time2Second = time2.hour * 3600 +
 					time2.minute * 60 + time2.second;
@@ -111,7 +111,7 @@ void Time::alarmClock(int sleepTime)
 		{
 			int restHour = sleepTime/3600;
 			int restMinute = (sleepTime - restHour * 3600) / 60;
-			int restSecond = sleepTime - restHour * 3600 
+			int restSecond = sleepTime - restHour * 3600
 										- restMinute * 60;
 			cout<<'\r';	//移到行首，起到“刷新”效果
 			cout<<setfill('0')<<setw(2)<<restHour<<"hour(s)";

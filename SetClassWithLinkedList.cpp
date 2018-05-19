@@ -30,6 +30,7 @@ public:
 	Set(const Set<T>& set);
 	~Set(){LinkedList<T>::ClearList();};
 	void Insert(const T item);	//有序插入且不重复
+	void Remove(const T item);	//删除值为item的元素
 	friend ostream& operator <<(ostream& out, Set<T>& set)	//输出重载
 	{
 		set.Reset();
@@ -53,6 +54,8 @@ public:
 	}
 	void ShowSize();	//显示元素个数
 	Set operator + (Set<T>& set);	//并集
+	Set operator * (Set<T>& set);	//交集
+	Set operator - (Set<T>& set);	//差集
 };
 
 template <class T>
@@ -106,6 +109,21 @@ void Set<T>::Insert(const T item)
 	this->Reset();
 	cout<<item<<" has been insert successfully"<<endl;
 }
+template<class T>
+void Set<T>::Remove(const T item)
+{
+	this->Reset();
+	while(!this->EndOfList())
+	{
+		if(item == this->Data())
+		{
+			this->DeleteAt();
+			this->Reset();
+			return;
+		}
+		this->Next();
+	}
+}
 
 template <class T>
 void Set<T>::ShowSize()
@@ -126,7 +144,58 @@ Set<T> Set<T>::operator + (Set<T>& set)
 	}
 	this->Reset();
 	set.Reset();
-	cout<<setNew;
+	setNew.Reset();
+	return setNew;
+}
+
+template <class T>
+Set<T> Set<T>::operator * (Set<T>& set)
+{
+  	Set setNew;
+  	//cout<<"setNew"<<setNew<<endl;
+	while(!this->EndOfList())
+	{
+		while(!set.EndOfList())
+		{
+			if(this->Data() == set.Data())
+			{
+				setNew.Insert(this->Data());
+				//如果遇到两个集合都有的元素就插入新集合
+				break;
+			}
+			set.Next();
+		}
+		this->Next();
+	}
+	this->Reset();
+	set.Reset();
+	setNew.Reset();
+	return setNew;
+}
+
+template <class T>
+Set<T> Set<T>::operator - (Set<T>& set)
+{
+  	Set setNew(*this);
+  	//cout<<"setNew"<<setNew<<endl;
+	while(!set.EndOfList())
+	{
+		while(!this->EndOfList())
+		{
+			if(this->Data() == set.Data())
+			{
+				setNew.Remove(this->Data());
+				this->Reset();
+				break;
+			}
+			this->Next();
+		}
+		set.Next();
+		this->Reset();
+	}
+	this->Reset();
+	set.Reset();
+	setNew.Reset();
 	return setNew;
 }
 
@@ -146,10 +215,17 @@ int main()
 	Set<int> set2;
 	set2.Insert(6);
 	set2.Insert(1);
+	set2.Insert(2);
 	set2.Insert(5);
 	Set<int> set3(set1+set2);
 	//cout<<(set1+set2)<<endl;
 	cout<<set3;
 	//set1+set2;
+	Set<int> set4(set1*set2);
+	cout<<set4;
+	set3.Remove(4);
+	cout<<set3;
+	Set<int> set5(set1-set2);
+	cout<<set5;
 	return 0;
 }

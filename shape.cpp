@@ -17,8 +17,8 @@ class Shape
 {
 public:
     Shape(){};
-    virtual double calArea(){};
-    virtual double calPerimeter(){};
+    virtual double calArea(){return 0;};
+    virtual double calPerimeter(){return 0;};
     virtual void show(){};
 protected:
     double area;
@@ -52,7 +52,7 @@ class Circle:public Shape
 public:
     Circle(double xx,double yy, double rr):x(xx),y(yy),r(rr){};
     double calArea(){area = PI * r * r;return area;};
-    double calPermimeter(){perimeter = 2.0 * PI * r;return perimeter;};
+    double calPerimeter(){perimeter = 2.0 * PI * r; return perimeter;};
     void show(){cout<<area<<' '<<perimeter<<endl;}
 protected:
     double x;

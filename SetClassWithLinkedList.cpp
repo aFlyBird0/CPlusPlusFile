@@ -8,6 +8,8 @@
 		3.不重复
 		4.输出重载
 		5.交并集,差集
+		6.删除指定值，pop最后一个值
+		7.下标重载，支持负数下标
 
 
 想法：关于模板与友元的结合还是有些问题，所以只能写在类内
@@ -31,6 +33,7 @@ public:
 	~Set(){LinkedList<T>::ClearList();};
 	void Insert(const T item);	//有序插入且不重复
 	void Remove(const T item);	//删除值为item的元素
+	T Pop();	//弹出最后一个元素
 	friend ostream& operator <<(ostream& out, Set<T>& set)	//输出重载
 	{
 		set.Reset();
@@ -56,6 +59,7 @@ public:
 	Set operator + (Set<T>& set);	//并集
 	Set operator * (Set<T>& set);	//交集
 	Set operator - (Set<T>& set);	//差集
+	T operator [] (const int pos);		//下标重载，支持负数索引
 };
 
 template <class T>
@@ -123,6 +127,19 @@ void Set<T>::Remove(const T item)
 		}
 		this->Next();
 	}
+}
+
+template<class T>
+T Set<T>::Pop()
+{
+	this->Reset();
+	int pos;
+	for(pos=0; pos<(this->ListSize()-1); pos++)
+		this->Next();
+	T data = this->Data();
+	this->DeleteAt();
+	this->Reset();
+	return data;
 }
 
 template <class T>
@@ -199,6 +216,29 @@ Set<T> Set<T>::operator - (Set<T>& set)
 	return setNew;
 }
 
+template<class T>
+T Set<T>::operator [](const int pos)
+{
+	this->Reset();
+	if(pos > (this->ListSize() -1)|| (pos + this->ListSize()) < 0)
+	{
+		cout<<"Out of index"<<endl;
+		exit(1);
+	}
+	if(pos >=0)
+	{
+		for(int i=0; i < pos; i++)
+			this->Next();
+		return this->Data();
+	}
+	else
+	{
+		for(int i=0; i<(pos+(this->ListSize())); i++)
+			this->Next();
+		return this->Data();
+	}
+}
+
 int main()
 {
 	Set<int> set1;
@@ -227,5 +267,9 @@ int main()
 	cout<<set3;
 	Set<int> set5(set1-set2);
 	cout<<set5;
+	set5.Pop();
+	cout<<set5;
+	cout<<set1[3]<<endl;
+	cout<<set1[-1]<<endl;
 	return 0;
 }

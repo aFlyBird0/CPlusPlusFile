@@ -1,3 +1,4 @@
+
 /*
 
 编写人：李鹤鹏
@@ -9,9 +10,9 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <iterator>
 #include <list>
+#include <map>
 #include <string>
 
 using namespace std;
@@ -30,14 +31,14 @@ protected:
 
 int main()
 {
-	list<Word> statistic;	//用来统计单个单词
+	map<int,Word> statistic;	//用来统计单个单词
 	list<string> article;	//用来存放文章每个分离的单词
 	list<string> ignore;	//用来存放忽略单词
 	ifstream fRead;
 	fRead.open("input.txt");
 	char ch = fRead.get();
 	int flag = 0;
-	ostringstream word;
+	string word = "";
 	while( ch != EOF)
 	{
 		if(flag == 0)
@@ -45,12 +46,12 @@ int main()
 			if(ch >= 'A' && ch <= 'Z')
 			{
 				flag = 1;
-				word<<char(ch - 'A' + 'a');	//转换成小写存入字符流
+				word = word + char(ch - 'A' + 'a');	//转换成小写存入字符流
 			}
 			else if(ch >= 'a' && ch <= 'z')
 			{
 				flag = 1;
-				word<<ch;
+				word = word + ch;
 			}
 		}
 		else
@@ -58,19 +59,19 @@ int main()
 			if(ch >= 'A' && ch <= 'Z')
 			{
 				flag = 1;
-				word<<char(ch - 'A' + 'a');	//转换成小写存入字符流
+				word= word+char(ch - 'A' + 'a');	//转换成小写存入字符流
 			}
 			else if(ch >= 'a' && ch <= 'z')
 			{
 				flag = 1;
-				word<<ch;
+				word = word + ch;
 			}
 			else
 				//遇到非字母，单词结束
 			{
 				flag = 0;
-				article.push_back(word.str());	//存入链表
-				word.flush();
+				article.push_back(word);	//存入链表
+				word= "";
 			}
 		}
 		ch = fRead.get();

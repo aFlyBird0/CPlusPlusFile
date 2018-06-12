@@ -31,7 +31,7 @@ protected:
 
 int main()
 {
-	map<int,Word> statistic;	//用来统计单个单词
+	map<string, float> statistic;	//用来统计单词词频
 	list<string> article;	//用来存放文章每个分离的单词
 	list<string> ignore;	//用来存放忽略单词
 	ifstream fRead;
@@ -46,7 +46,7 @@ int main()
 			if(ch >= 'A' && ch <= 'Z')
 			{
 				flag = 1;
-				word = word + char(ch - 'A' + 'a');	//转换成小写存入字符流
+				word = word + char(ch - 'A' + 'a');	//统一转换成小写
 			}
 			else if(ch >= 'a' && ch <= 'z')
 			{
@@ -59,8 +59,7 @@ int main()
 			if(ch >= 'A' && ch <= 'Z')
 			{
 				flag = 1;
-				word= word+char(ch - 'A' + 'a');	//转换成小写存入字符流
-			}
+				word= word+char(ch - 'A' + 'a');
 			else if(ch >= 'a' && ch <= 'z')
 			{
 				flag = 1;
@@ -79,5 +78,45 @@ int main()
 	fRead.close();
 	copy(article.begin(), article.end(), ostream_iterator<string>(cout, " "));
 		cout<<endl;
+    fRead.open("ignore.txt");
+    flag = 0;
+	word = "";
+	while( ch != EOF)
+	{
+		if(flag == 0)
+		{
+			if(ch >= 'A' && ch <= 'Z')
+			{
+				flag = 1;
+				word = word + char(ch - 'A' + 'a');	//统一转换成小写
+			}
+			else if(ch >= 'a' && ch <= 'z')
+			{
+				flag = 1;
+				word = word + ch;
+			}
+		}
+		else
+		{
+			if(ch >= 'A' && ch <= 'Z')
+			{
+				flag = 1;
+				word= word+char(ch - 'A' + 'a');
+			else if(ch >= 'a' && ch <= 'z')
+			{
+				flag = 1;
+				word = word + ch;
+			}
+			else
+				//遇到非字母，单词结束
+			{
+				flag = 0;
+				ignore.push_back(word);	//存入链表
+				word= "";
+			}
+		}
+		ch = fRead.get();
+	}
+	fRead.close();
 	return 0;
 }

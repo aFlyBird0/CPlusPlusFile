@@ -18,18 +18,6 @@
 
 using namespace std;
 
-class Word
-{
-public:
-	Word(){word = ""; time = 0;};
-	Word(char *w, int t):word(w),time(t){};
-	~Word(){};
-
-protected:
-	string word;
-	int time;
-};
-
 int main()
 {
 	map<string, int> statistic;	//用来统计单词词频
@@ -97,7 +85,7 @@ int main()
 	list<string>::iterator articleIterator;
 	list<string>::iterator ignoreIterator;
 	map<string,int>::iterator statisticIterator;
-	bool isInIgnore = false;
+	bool isInIgnore = false;	//是否在忽略清单中
 	for(articleIterator = article.begin(); articleIterator!=article.end(); articleIterator++)
 	{
 		isInIgnore = false;
